@@ -1,7 +1,7 @@
 paso a paso para correr el proyecto 
 
 1- ejecutar el comando en la terminal "docker build . -t examen/mascotas".\
-2- luego ejecutar el siguiente comando "docker run -p 8080:3000 -e REACT_APP_API_HOST=url_api examen/mascotas", donde url_api es tu url del crud como en el siguiente ejemplo: https://crudcrud.com/api/94592dd65fc440449b75d8f3c36f9150.\
+2- luego ejecutar el siguiente comando "docker run -p 8080:3000 -e REACT_APP_API_HOST=url_api examen/mascotas", donde url_api es tu url del crud como en el siguiente ejemplo: https://crudcrud.com/api/94592dd65fc440449b75d8f3c36f9150 .\
 3- Acceder al browser con esta url http://localhost:8080/.\
 4- probar la funcionalidad del programa.\
 
