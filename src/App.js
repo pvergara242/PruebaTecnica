@@ -6,8 +6,11 @@ import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
+require('dotenv').config();
 
-const url="https://crudcrud.com/api/903af30c4e1b480da57b345fb79cc801/mascotas/";
+const url = (process.env.REACT_APP_API_HOST || "https://crudcrud.com/api/903af30c4e1b480da57b345fb79cc801") + "/mascotas/";
+
+console.log('process.env.REACT_APP_API_HOST: ', process.env.REACT_APP_API_HOST);
 
 class App extends Component {
   state = {
@@ -41,14 +44,14 @@ class App extends Component {
   }
   
   peticionPut = () =>{
-    axios.put(url+this.state.form._id, this.state.form).then(response=>{
+    axios.put(url+this.state.form.id, this.state.form).then(response=>{
       this.modalAbrir();
       this.peticionGet();
     })
   }
   
   peticionDelete = () =>{
-    axios.delete(url+this.state.form._id).then(response=>{
+    axios.delete(url+this.state.form.id).then(response=>{
       this.setState({modalEliminar:false});
       this.peticionGet();
     })
@@ -58,7 +61,7 @@ class App extends Component {
     this.setState({
       tipoModal:'actualizar',
       form:{
-        _id: mascota._id,
+        id: mascota._id,
         edad: mascota.edad,
         nombre:mascota.nombre,
         especie:mascota.especie
@@ -78,16 +81,15 @@ class App extends Component {
         [e.target.id] : e.target.value
       }
     });
-    console.log(this.state.form);
   }
   
   modalInsertar = () =>{
     this.setState({modalInsertar: !this.state.modalInsertar});
   }
   
-  // componentDidMount(){
-  //   this.peticionGet();
-  // }
+  componentDidMount(){
+    this.peticionGet();
+  }
 
   render(){
     return(
@@ -107,10 +109,10 @@ class App extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.data.map(mascota=>{
+            {this.state.data.map((mascota, index)=>{
               return(
                 <tr>
-                <td>{mascota.id}</td>
+                <td>{index + 1}</td>
                 <td>{mascota.edad}</td>
                 <td>{mascota.nombre}</td>
                 <td>{mascota.especie}</td>
@@ -148,7 +150,7 @@ class App extends Component {
             </Modal.Body>
 
             <Modal.Footer>
-               {this.state.tipoModal == 'insertar' ?
+               {this.state.tipoModal === 'insertar' ?
               <Button variant="primary" onClick={()=>this.peticionPost()}>
                 Insertar
                 </Button>: <Button className="btn btn-primary" onClick={()=>this.peticionPut()}>
